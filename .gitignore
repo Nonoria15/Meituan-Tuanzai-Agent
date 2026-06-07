@@ -9,3 +9,12 @@ docs/render_*/
 ~$*.docx
 .DS_Store
 Thumbs.db
+
+# Temporary reference materials
+美团界面图片/
+队友UI修改意见/
+赛题介绍+评分标准.*
+019e*.png
+QQ20260509-*.png
+UI_Parameters_Report_CN.*
+PRODUCT_POSITIONING.md
