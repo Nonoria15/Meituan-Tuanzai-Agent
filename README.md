@@ -159,7 +159,7 @@ Demo 中加入“爷爷”作为无障碍示例同行人。行动不便、需要
 │   ├── images/
 │   └── assets/
 ├── docs/
-│   ├── TuanZai_AI_Design_Document_Final.docx
+│   ├── 团崽 AI：基于美团小团的多人周末出行规划 Agent设计文档.pdf
 │   ├── TuanZai_AI_Product_Introduction_For_Review_v2.docx
 │   └── Vercel_Deployment_Guide.md
 ├── package.json
@@ -199,7 +199,7 @@ Online Demo: https://meituan-tuanzai-agent.vercel.app/
 
 - Demo：https://meituan-tuanzai-agent.vercel.app/
 - Tool 实现代码：`src/agent/mockAgentTools.ts`。
-- 设计文档：`docs/TuanZai_AI_Design_Document_Final.docx`。
+- 设计文档：`docs/团崽 AI：基于美团小团的多人周末出行规划 Agent设计文档.pdf`。
 - 交互说明文档：`docs/TuanZai_AI_Product_Introduction_For_Review_v2.docx`。
 
 ## 注意事项
