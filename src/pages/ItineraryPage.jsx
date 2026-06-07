@@ -23,10 +23,18 @@ function companionSyncRows(selectedFriends = []) {
   return rows;
 }
 
+function hasAccessibilityNeeds(selectedFriends = []) {
+  return selectedFriends.some((friend) => {
+    const text = [friend.name, friend.relation, friend.summary, ...(friend.tags || [])].join(' ');
+    return /爷爷|奶奶|行动不便|需要轮椅|轮椅|需要陪同|不能吃辣|不吃辣|无障碍|电梯方便|好停车/.test(text);
+  });
+}
+
 export default function ItineraryPage({ onRestart, onBack, plan, selectedRestaurant, selectedFriends = [] }) {
   const restaurant = selectedRestaurant || getFallbackRestaurantsForScene(plan?.sceneType)[0];
   const budget = (plan?.budget || 368) + (restaurant?.budgetDelta || 0);
   const syncRows = companionSyncRows(selectedFriends);
+  const accessibilityMode = plan?.sceneType === 'accessibility' || hasAccessibilityNeeds(selectedFriends);
 
   const itinerary = plan?.timelineDetails?.length
     ? [
@@ -119,6 +127,18 @@ export default function ItineraryPage({ onRestart, onBack, plan, selectedRestaur
             <p className="text-lg font-black">约22分钟</p>
           </div>
         </div>
+
+        {accessibilityMode && (
+          <div className="rounded-2xl border border-[#c8efd5] bg-[#f0fff4] p-4 shadow-card">
+            <h3 className="mb-2 flex items-center gap-2 font-black text-[#166534]">
+              <ShieldCheck size={18} className="text-[#16a34a]" /> 无障碍友好已优先保留
+            </h3>
+            <div className="space-y-2 text-sm leading-6 text-[#276749]">
+              <p>已优先保留无障碍路线：电梯方便、少走路、低排队，适合陪同出行。</p>
+              <p>餐厅支持清淡不辣选项，并优先选择安静、可预约、不要太晚的安排。</p>
+            </div>
+          </div>
+        )}
 
         <div className="rounded-2xl bg-white p-4 shadow-card">
           <h3 className="mb-3 flex items-center gap-2 font-black">

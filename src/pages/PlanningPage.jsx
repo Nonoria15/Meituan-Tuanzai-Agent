@@ -28,7 +28,17 @@ function sourceSummary(selectedFriends = []) {
   return [...new Set(labels)].join(' / ');
 }
 
+function hasAccessibilityNeeds(selectedFriends = []) {
+  return selectedFriends.some((friend) => {
+    const text = [friend.name, friend.relation, friend.summary, ...(friend.tags || [])].join(' ');
+    return /爷爷|奶奶|行动不便|需要轮椅|轮椅|需要陪同|不能吃辣|不吃辣|无障碍|电梯方便|好停车/.test(text);
+  });
+}
+
 function constraintSummary(selectedFriends = []) {
+  if (hasAccessibilityNeeds(selectedFriends)) {
+    return '已将无障碍、少走路、清淡不辣、安静和不要太晚设为强约束';
+  }
   const hasFamily = selectedFriends.some((friend) =>
     ['家人', '孩子', '老人'].includes(friend.relation) || friend.tags?.some((tag) => ['少走路', '不要太晚', '亲子友好'].includes(tag)),
   );
@@ -40,6 +50,19 @@ export default function PlanningPage({ request, selectedFriends = [], onBack, on
   const [toolStep, setToolStep] = useState(0);
   const activeThinkingSteps = useMemo(() => {
     if (!selectedFriends.length) return thinkingSteps;
+    if (hasAccessibilityNeeds(selectedFriends)) {
+      return [
+        thinkingSteps[0],
+        `已选择同行人：${friendNames(selectedFriends)}`,
+        `已识别同行人来源：${sourceSummary(selectedFriends)}`,
+        '已识别特殊出行需求：行动不便 / 轮椅友好 / 不能吃辣',
+        '正在过滤不适合轮椅或行动不便的商家与活动',
+        '正在优先选择电梯方便、少走路、安静和不辣餐厅',
+        '正在平衡其他同行人偏好，但无障碍与饮食限制优先',
+        '基于美团小团实时排队、预约和营业状态重新排序',
+        ...thinkingSteps.slice(2),
+      ];
+    }
     return [
       thinkingSteps[0],
       `已选择同行人：${friendNames(selectedFriends)}`,

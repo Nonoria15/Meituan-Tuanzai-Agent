@@ -73,6 +73,13 @@ const preferenceTags = [
   '室内优先',
   '可接受排队',
   '不喜欢排队',
+  '行动不便',
+  '需要轮椅',
+  '需要陪同',
+  '不能吃辣',
+  '无障碍',
+  '电梯方便',
+  '好停车',
 ];
 const invitedFriend = {
   id: 'invite-xiaochen',
@@ -96,7 +103,7 @@ function friendBadge(friend, selected) {
 
 function friendOptions(draftFriends) {
   const customFriends = draftFriends.filter((friend) => friendSource(friend) !== 'meituan');
-  return [...friends.map((friend) => ({ ...friend, source: 'meituan' })), ...customFriends].filter(
+  return [...friends.map((friend) => ({ ...friend, source: friend.source || 'meituan' })), ...customFriends].filter(
     (friend, index, list) => list.findIndex((item) => item.id === friend.id) === index,
   );
 }

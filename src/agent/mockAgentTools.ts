@@ -1,4 +1,5 @@
 export type SceneType =
+  | 'accessibility'
   | 'date'
   | 'friends'
   | 'family'
@@ -160,6 +161,15 @@ export const mockCompanions: Companion[] = [
     preferenceTags: ['安静', '少走路', '环境好', '不要太晚'],
   },
   {
+    id: 'grandpa',
+    name: '爷爷',
+    source: 'manual',
+    relation: '老人',
+    authorized: true,
+    preferenceTags: ['老人', '行动不便', '需要轮椅', '需要陪同', '不能吃辣', '少走路', '安静', '好停车', '电梯方便', '无障碍', '不要太晚'],
+    note: '行动不便，需要轮椅或陪同；不能吃辣，希望少走路、安静、好停车、电梯方便，不要太晚。',
+  },
+  {
     id: 'xiaochen',
     name: '小陈',
     source: 'invite',
@@ -274,6 +284,27 @@ export const mockActivities: Activity[] = [
     image: 'https://images.unsplash.com/photo-1531058020387-3be344556be6?auto=format&fit=crop&w=720&q=80',
     reason: '免费展览，适合低预算拍照路线。',
   },
+  {
+    id: 'act_accessible_mall',
+    name: '无障碍商场室内展',
+    type: 'indoor',
+    category: '无障碍展馆',
+    sceneTags: ['accessibility', 'elderly', 'quiet', 'indoor'],
+    preferenceTags: ['无障碍', '需要轮椅', '电梯方便', '少走路', '安静', '不要太晚'],
+    rating: 4.8,
+    pricePerPerson: 38,
+    packagePrice: 76,
+    distanceKm: 0.5,
+    walkingMinutes: 3,
+    businessHours: '10:00-18:30',
+    bookable: true,
+    queueLevel: 'low',
+    noiseLevel: 'quiet',
+    indoor: true,
+    suitableFor: ['老人', '家庭', '行动不便'],
+    image: 'https://images.unsplash.com/photo-1522093007474-d86e9bf7ba6f?auto=format&fit=crop&w=720&q=80',
+    reason: '室内无障碍动线，电梯直达，适合行动不便和老人陪同出行。',
+  },
 ];
 
 export const mockRestaurants: Restaurant[] = [
@@ -387,6 +418,28 @@ export const mockRestaurants: Restaurant[] = [
     reason: '低预算团购券，减少踩雷。',
     wait: '17:30 可预约',
   },
+  {
+    id: 'res_accessible_yue',
+    name: '松鹤清淡粤菜',
+    type: 'restaurant',
+    cuisine: '粤菜',
+    sceneTags: ['accessibility', 'elderly', 'family', 'quiet'],
+    preferenceTags: ['无障碍', '不能吃辣', '安静', '好停车', '电梯方便', '可预约'],
+    rating: 4.8,
+    pricePerPerson: 86,
+    packagePrice: 172,
+    distanceKm: 0.42,
+    walkingMinutes: 3,
+    businessHours: '11:00-20:30',
+    bookable: true,
+    queueLevel: 'low',
+    noiseLevel: 'quiet',
+    indoor: true,
+    suitableFor: ['老人', '家庭', '行动不便'],
+    image: 'https://images.unsplash.com/photo-1543353071-10c8ba85a904?auto=format&fit=crop&w=720&q=80',
+    reason: '清淡不辣，电梯直达，安静可预约，适合行动不便的老人。',
+    wait: '16:30 可预约',
+  },
 ];
 
 export const mockCafes = mockRestaurants.filter((item) => item.type === 'cafe');
@@ -432,7 +485,8 @@ export function mergeGroupPreferences(userIntent: UserIntent, companions: Compan
 export function detectSceneType(userIntent: UserIntent, companions: Companion[] = []): ToolResult<SceneType> {
   const text = `${userIntent.rawInput} ${companions.map((item) => `${item.name} ${item.relation || ''} ${item.preferenceTags.join(' ')}`).join(' ')}`;
   let sceneType: SceneType = 'friends';
-  if (/妈妈|老人|家人|少走路|安静|不要太晚/.test(text)) sceneType = 'elderly';
+  if (/行动不便|需要轮椅|轮椅|需要陪同|爷爷|奶奶|无障碍|电梯方便|好停车|不能吃辣|不吃辣|清淡/.test(text)) sceneType = 'accessibility';
+  else if (/妈妈|老人|家人|少走路|安静|不要太晚/.test(text)) sceneType = 'elderly';
   else if (/亲子|孩子|儿童/.test(text)) sceneType = 'family';
   else if (/雨天|下雨|室内/.test(text)) sceneType = 'rainy';
   else if (/低预算|预算 200|便宜|团购/.test(text)) sceneType = 'budget';
@@ -450,6 +504,13 @@ const scorePlace = (place: Place, sceneType: SceneType, constraints: string[]) =
   if (constraints.includes('安静') && place.noiseLevel === 'quiet') score += 12;
   if (constraints.includes('室内') && place.indoor) score += 12;
   if (constraints.includes('低预算')) score -= place.pricePerPerson / 8;
+  if (sceneType === 'accessibility') {
+    if (place.walkingMinutes <= 4) score += 18;
+    if (place.queueLevel === 'low') score += 12;
+    if (place.noiseLevel === 'quiet') score += 16;
+    if (/不辣|清淡|无障碍|电梯方便|需要轮椅/.test(place.preferenceTags.join(' '))) score += 24;
+    if (/Livehouse|火锅|烤肉|烧烤|KTV/.test(place.name)) score -= 100;
+  }
   return score;
 };
 
@@ -545,6 +606,100 @@ export function compareFallbackOptions(options: Restaurant[], constraints: strin
 export function updatePlanBudget(plan: Plan, replacement: Restaurant): ToolResult<Plan> {
   const updated = { ...plan, restaurant: replacement, budget: plan.budget - plan.restaurant.pricePerPerson * 2 + replacement.pricePerPerson * 2 };
   return toolResult('updatePlanBudget', 'success', { planId: plan.id, replacementId: replacement.id }, updated, '已更新预算和餐厅信息。');
+}
+
+const sameSceneOrBookable = (place: Place, sceneType: SceneType) =>
+  place.sceneTags.includes(sceneType) || place.bookable || place.queueLevel === 'low';
+
+const isRestaurantPlace = (place: Place) => place.type === 'restaurant' || place.type === 'cafe';
+
+export function searchAlternativePlaces(currentStop: Place, currentPlan: Plan, constraints: string[] = []) {
+  const source = isRestaurantPlace(currentStop) ? mockRestaurants : mockActivities;
+  const output = source
+    .filter((item) => item.id !== currentStop.id)
+    .filter((item) => sameSceneOrBookable(item, currentPlan.sceneType))
+    .filter((item) => {
+      if (!['elderly', 'family', 'accessibility'].includes(currentPlan.sceneType)) return true;
+      const text = `${item.name} ${item.preferenceTags.join(' ')}`;
+      if (/Livehouse|火锅|烤肉|烧烤|KTV/.test(text)) return false;
+      if (currentPlan.sceneType === 'accessibility') {
+        const accessibilityMatch = /无障碍|不能吃辣|不辣|清淡|安静|少走路|电梯方便|需要轮椅/.test(text);
+        return item.noiseLevel !== 'lively' && item.walkingMinutes <= 8 && item.queueLevel !== 'high' && accessibilityMatch;
+      }
+      return item.noiseLevel !== 'lively';
+    })
+    .sort((a, b) => scorePlace(b, currentPlan.sceneType, constraints) - scorePlace(a, currentPlan.sceneType, constraints))
+    .slice(0, 3);
+  return toolResult(
+    'searchAlternativePlaces',
+    'success',
+    { currentStopId: currentStop.id, planId: currentPlan.id, sceneType: currentPlan.sceneType, constraints },
+    output,
+    `已找到 ${output.length} 个同类可替换站点。`,
+  );
+}
+
+export function replacePlanStop(plan: Plan, stopId: string, replacementPlace: Place): ToolResult<Plan> {
+  const replaceRestaurant = isRestaurantPlace(replacementPlace) || plan.restaurant.id === stopId;
+  const updatedPlan = replaceRestaurant
+    ? { ...plan, restaurant: replacementPlace as Restaurant }
+    : { ...plan, activity: replacementPlace as Activity };
+  const updatedTimeline = updatedPlan.timeline.map((item, index) => {
+    if (replaceRestaurant && index === 2) return item.replace(plan.restaurant.name, replacementPlace.name);
+    if (!replaceRestaurant && index === 0) return item.replace(plan.activity.name, replacementPlace.name);
+    return item;
+  });
+  return toolResult(
+    'replacePlanStop',
+    'success',
+    { planId: plan.id, stopId, replacementId: replacementPlace.id },
+    { ...updatedPlan, timeline: updatedTimeline },
+    `已将站点替换为 ${replacementPlace.name}。`,
+  );
+}
+
+export function recalculatePlanAfterReplacement(plan: Plan): ToolResult<Plan> {
+  const route = estimateRoute([plan.activity, plan.restaurant]).output as RouteResult;
+  const budget = calculateBudget([plan.activity, plan.restaurant]).output as BudgetResult;
+  const updatedPlan = {
+    ...plan,
+    route,
+    budget: budget.total,
+    reason: `${plan.reason} 已重新计算预算、路线和预约风险。`,
+  };
+  return toolResult(
+    'recalculatePlanAfterReplacement',
+    budget.withinBudget ? 'success' : 'failed',
+    { planId: plan.id },
+    updatedPlan,
+    budget.withinBudget ? '替换后仍在预算和路线约束内。' : '替换后超出预算，需要再次降级或替换。',
+  );
+}
+
+export function updateToolTraceForReplacement(currentStop: Place, replacementPlace: Place, updatedPlan: Plan): ToolResult[] {
+  return [
+    toolResult(
+      'searchAlternativePlaces',
+      'success',
+      { currentStopId: currentStop.id, planId: updatedPlan.id },
+      { replacementId: replacementPlace.id },
+      '已搜索同类、同商圈、可预约的替代站点。',
+    ),
+    toolResult(
+      'replacePlanStop',
+      'success',
+      { oldStopId: currentStop.id, replacementId: replacementPlace.id },
+      updatedPlan,
+      `已将「${currentStop.name}」替换为「${replacementPlace.name}」。`,
+    ),
+    toolResult(
+      'recalculatePlanAfterReplacement',
+      'success',
+      { planId: updatedPlan.id },
+      { budget: updatedPlan.budget, routeMinutes: updatedPlan.route.totalMinutes },
+      '已重新计算预算和路线，仍可执行。',
+    ),
+  ];
 }
 
 export function generateFallbackPlan(reason: string, currentPlan: Plan, constraints: string[] = []): FallbackResult {

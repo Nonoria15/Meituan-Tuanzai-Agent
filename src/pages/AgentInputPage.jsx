@@ -79,6 +79,11 @@ function friendNames(selectedFriends = []) {
 
 function getFriendScenarioType(selectedFriends = []) {
   if (!selectedFriends.length) return 'generic';
+  const hasAccessibility = selectedFriends.some((friend) => {
+    const text = [friend.name, friend.relation, friend.summary, ...(friend.tags || [])].join(' ');
+    return /爷爷|奶奶|行动不便|需要轮椅|轮椅|需要陪同|不能吃辣|不吃辣|无障碍|电梯方便|好停车/.test(text);
+  });
+  if (hasAccessibility) return 'accessibility';
   const hasFamily = selectedFriends.some((friend) => {
     const text = [friend.name, friend.relation, ...(friend.tags || [])].join(' ');
     return /妈妈|爸爸|宝宝|孩子|老人|家人|亲子|安静|少走路|不要太晚/.test(text);
@@ -95,6 +100,15 @@ function getFriendScenarioType(selectedFriends = []) {
 
 function getDynamicScenes(selectedFriends = []) {
   const type = getFriendScenarioType(selectedFriends);
+  if (type === 'accessibility') {
+    return [
+      { label: '无障碍少走路', text: '周末想带行动不便的家人出门，需要轮椅友好、少走路、电梯方便、好停车，餐厅不能吃辣，不要太晚。' },
+      { label: '清淡不辣晚餐', text: '想安排适合老人陪同的室内活动和清淡不辣晚餐，路线要短，可预约，环境安静。' },
+      { label: '电梯方便路线', text: '请优先安排同商圈、电梯方便、无障碍通行的活动和餐厅，减少换乘和排队。' },
+      { label: '安静陪同出行', text: '和家人轻松出门，不要吵，不要走太多路，最好有休息区和可预约的清淡餐厅。' },
+      { label: '不太晚回家', text: '下午出门，想在 18 点左右结束，适合老人、轮椅友好、餐厅不辣。' },
+    ];
+  }
   if (type === 'social') return socialScenes;
   if (type === 'family') return familyScenes;
   if (type === 'mixed') return mixedScenes;
@@ -107,6 +121,14 @@ function getDynamicScenes(selectedFriends = []) {
 function getDynamicQuestions(selectedFriends = []) {
   const names = friendNames(selectedFriends);
   const type = getFriendScenarioType(selectedFriends);
+  if (type === 'accessibility') {
+    const familyName = names || '家人';
+    return [
+      `带${familyName}出门，轮椅友好、少走路怎么安排？`,
+      '能不能过滤掉火锅烧烤和需要久站的活动？',
+      '请优先推荐不辣、安静、可预约的餐厅。',
+    ];
+  }
   if (type === 'social') {
     return [
       `我和${names}下午 4 小时怎么安排？`,
