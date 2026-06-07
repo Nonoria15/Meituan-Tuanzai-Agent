@@ -193,11 +193,11 @@ npm run preview
 
 ## 在线 Demo
 
-Online Demo: 待补充 / To be added
+Online Demo: https://meituan-tuanzai-agent.vercel.app/
 
 ## 提交材料说明
 
-- Demo：Vercel 在线页面。
+- Demo：https://meituan-tuanzai-agent.vercel.app/
 - Tool 实现代码：`src/agent/mockAgentTools.ts`。
 - 设计文档：`docs/TuanZai_AI_Design_Document_Final.docx`。
 - 交互说明文档：`docs/TuanZai_AI_Product_Introduction_For_Review_v2.docx`。
