@@ -3,7 +3,7 @@ import { ArrowRight, Cpu, MapPinned, Sparkles, Zap } from 'lucide-react';
 import MouseTrailParticles from '../components/MouseTrailParticles.jsx';
 import WaterfallCards from '../components/WaterfallCards.jsx';
 
-const logoPath = '/美团界面图片/meituan_new_logo_transparent_clean.png';
+const logoPath = '/images/meituan-logo.png';
 
 export default function LandingPage({ onEnter, isTransitioning }) {
   const [logoBouncing, setLogoBouncing] = useState(false);

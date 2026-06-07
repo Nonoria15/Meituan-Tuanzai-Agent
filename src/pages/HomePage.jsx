@@ -16,7 +16,7 @@ import { useState } from 'react';
 import BottomNav from '../components/BottomNav.jsx';
 import { friends } from '../data/mockData.js';
 
-const logoPath = '/美团界面图片/美团logo+袋鼠.png';
+const logoPath = '/images/meituan-logo.png';
 
 const grid = [
   { label: '外卖', icon: '/images/icon_waimai.png' },
