@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.env
+.env.*
+*.log
+vite-dev*.log
+docs/doc_render/
+docs/render_*/
+~$*.docx
+.DS_Store
+Thumbs.db
