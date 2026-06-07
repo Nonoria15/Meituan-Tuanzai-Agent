@@ -16,8 +16,6 @@ import { useState } from 'react';
 import BottomNav from '../components/BottomNav.jsx';
 import { friends } from '../data/mockData.js';
 
-const logoPath = '/images/meituan-logo.png';
-
 const grid = [
   { label: '外卖', icon: '/images/icon_waimai.png' },
   { label: '到店美食', icon: '/images/icon_food.png' },
@@ -192,7 +190,24 @@ export default function HomePage({ onStart, selectedFriends = [], onFriendsChang
             <button className="mobile-home-city">
               <MapPin size={16} /> 北京
             </button>
-            <img src={logoPath} alt="美团" className="h-8 w-auto object-contain" />
+            <div className="flex items-center gap-3" aria-label="首页快捷入口">
+              <button
+                type="button"
+                aria-label="消息"
+                className="grid h-8 w-8 place-items-center text-[#1f1f1f] active:scale-95"
+                onClick={() => console.log('消息入口')}
+              >
+                <MessageCircle size={22} strokeWidth={2} />
+              </button>
+              <button
+                type="button"
+                aria-label="扫码"
+                className="grid h-8 w-8 place-items-center text-[#1f1f1f] active:scale-95"
+                onClick={() => console.log('扫码入口')}
+              >
+                <QrCode size={22} strokeWidth={2} />
+              </button>
+            </div>
           </div>
           <div className="mobile-home-search">
             <Search size={18} className="text-[#666]" />
