@@ -70,6 +70,29 @@ const familyScenes = [
   },
 ];
 
+const momScenes = [
+  {
+    label: '带妈妈轻松出门',
+    text: '周末想带妈妈轻松出门，希望路线少走路、环境安静，餐厅环境好一点，最好不要太晚回家。',
+  },
+  {
+    label: '安静餐厅优先',
+    text: '周末想和妈妈出去走走，优先找安静、环境好、可预约的餐厅，路线不要太远。',
+  },
+  {
+    label: '同商圈少走路',
+    text: '想和妈妈安排一个同商圈的轻松路线，少走路，有休息点，晚餐环境好一点。',
+  },
+  {
+    label: '不太晚回家',
+    text: '下午和妈妈出门，想安排轻松活动和晚餐，最好 18 点左右结束，不要太晚回家。',
+  },
+  {
+    label: '雨天室内方案',
+    text: '如果下雨，想和妈妈安排室内活动和安静晚餐，交通方便，少走路，不要排队太久。',
+  },
+];
+
 const familyElderScenes = [
   {
     label: '陪老人轻松出门',
@@ -187,8 +210,12 @@ function getFriendScenarioType(selectedFriends = []) {
   });
   if (hasKids) return 'family';
   const hasFamily = selectedFriends.some((friend) => {
-    const text = [friend.name, friend.relation, ...(friend.tags || [])].join(' ');
-    return /妈妈|爸爸|家人|亲子/.test(text);
+    const text = [friend.name, friend.relation, friend.summary, ...(friend.tags || [])].join(' ');
+    return /妈妈|爸爸|家人|家庭|环境好|不要太晚|安静/.test(text);
+  });
+  const hasMom = selectedFriends.some((friend) => {
+    const text = [friend.name, friend.relation, friend.summary, ...(friend.tags || [])].join(' ');
+    return /妈妈|家人|家庭|环境好|不要太晚|安静/.test(text);
   });
   const hasSocial = selectedFriends.some((friend) => {
     const text = [friend.id, friend.name, ...(friend.tags || [])].join(' ');
@@ -196,8 +223,9 @@ function getFriendScenarioType(selectedFriends = []) {
   });
   const hasDate = selectedFriends.some((friend) => {
     const text = [friend.id, friend.name, ...(friend.tags || [])].join(' ');
-    return /xiaoyu|小雨|拍照|日料|展览|约会|少走路/.test(text);
+    return /xiaoyu|小雨|拍照|日料|展览|约会|甜品/.test(text);
   });
+  if (hasMom) return 'family_mom';
   if (hasDate && !hasSocial) return 'date';
   if ((hasSocial || selectedFriends.length >= 3) && !hasFamily) return 'social';
   if (selectedFriends.length > 1 && hasFamily && hasSocial) return 'mixed';
@@ -242,6 +270,18 @@ export function getDefaultPlanningContent(selectedFriends = []) {
         '和小雨约会，拍照加晚餐怎么安排？',
         '想少走路，有日料和甜品的路线有哪些？',
         '预算内轻松约会，怎么避开排队店？',
+      ],
+    };
+  }
+  if (type === 'family_mom') {
+    return {
+      sceneType: type,
+      defaultInput: '周末想带妈妈轻松出门，希望路线少走路、环境安静，餐厅环境好一点，最好不要太晚回家。',
+      quickScenes: momScenes,
+      recommendedQuestions: [
+        '带妈妈出门，少走路的路线怎么安排？',
+        '有没有安静、环境好、可预约的餐厅？',
+        '想和妈妈轻松吃饭散步，不要太晚怎么安排？',
       ],
     };
   }
