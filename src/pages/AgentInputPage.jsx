@@ -1,26 +1,49 @@
 import { ArrowLeft, Bot, SendHorizontal } from 'lucide-react';
 import { quickScenes, sampleRequests } from '../data/mockData.js';
 
-const socialScenes = [
+const dateScenes = [
   {
     label: '双人轻松约会',
-    text: '今天下午想和同行人轻松约会，最好能拍照、有甜品和一顿不太贵的晚餐，别走太多路。',
+    text: '周末想和小雨轻松约会，希望能拍照、有甜品或日料，路线别太远，最好同一个商圈解决。',
   },
   {
-    label: '朋友聚会不踩雷',
-    text: '今晚和朋友聚会，想先玩再吃饭，气氛热闹一点，预算别太高，最好同一个商圈解决。',
+    label: '拍照 + 晚餐',
+    text: '想安排适合拍照的活动和晚餐，节奏轻松一点，餐厅希望可预约、别排太久。',
   },
   {
-    label: '拍照 + 晚餐路线',
-    text: '今天想安排一条适合拍照和晚餐的路线，活动轻松一点，餐厅希望可预约、别排太久。',
+    label: '日料甜品路线',
+    text: '周末想安排日料和甜品，路线少走一点，预算控制在 400 内。',
   },
   {
     label: '同商圈少走路',
-    text: '请帮我把活动、咖啡和晚餐安排在同一个商圈，少走路，节奏轻松一点。',
+    text: '请把活动、甜品和晚餐安排在同一个商圈，少走路，节奏轻松一点。',
   },
   {
-    label: '预算内吃喝玩乐',
-    text: '周末和同行人想吃喝玩乐一起安排，预算控制在 400 内，优先选择不踩雷、可预约的店。',
+    label: '预算内不踩雷',
+    text: '想和小雨轻松约会，预算别太高，优先选择评分高、可预约、不排队的店。',
+  },
+];
+
+const socialScenes = [
+  {
+    label: '朋友聚会吃喝玩乐',
+    text: '今晚和朋友聚会，想先玩再吃饭，气氛热闹一些，最好同一个商圈解决。',
+  },
+  {
+    label: '热闹不踩雷',
+    text: '今晚和朋友聚会，想先玩再吃饭，气氛热闹一点，预算别太高，最好同一个商圈解决。',
+  },
+  {
+    label: '桌游 + 烤肉',
+    text: '今晚想和朋友先玩桌游再吃烤肉，气氛热闹一点，最好都在同一个商圈。',
+  },
+  {
+    label: '电影 + 火锅',
+    text: '想和朋友看电影后吃火锅，预算别太高，尽量避开高排队商家。',
+  },
+  {
+    label: '同商圈少折腾',
+    text: '朋友聚会希望活动和餐厅都在同一个商圈，少换乘，能提前预约最好。',
   },
 ];
 
@@ -44,6 +67,75 @@ const familyScenes = [
   {
     label: '不要太晚回家',
     text: '帮我安排一个不要太晚结束的周末计划，适合家人一起，少走路，餐厅环境好一点。',
+  },
+];
+
+const familyElderScenes = [
+  {
+    label: '陪老人轻松出门',
+    text: '周末想和妈妈一起带爷爷出门，希望路线少走路、电梯方便，餐厅清淡不辣，最好安静一点、不要太晚回家。',
+  },
+  {
+    label: '清淡不辣晚餐',
+    text: '想安排适合家人陪同的室内活动和清淡不辣晚餐，路线要短，可预约，环境安静。',
+  },
+  {
+    label: '无障碍同商圈',
+    text: '请优先安排同商圈、电梯方便、无障碍通行的活动和餐厅，减少换乘和排队。',
+  },
+  {
+    label: '安静家庭路线',
+    text: '和妈妈一起带爷爷轻松出门，不要吵，不要走太多路，最好有休息区和可预约餐厅。',
+  },
+  {
+    label: '不太晚回家',
+    text: '下午出门，希望 18 点左右结束，适合老人陪同，餐厅清淡不辣、好停车。',
+  },
+];
+
+const accessibilityScenes = [
+  {
+    label: '无障碍少走路',
+    text: '周末想带爷爷出门，希望少走路、电梯方便、安静不吵，餐厅要有不辣选择，最好不要太晚回家。',
+  },
+  {
+    label: '清淡不辣晚餐',
+    text: '想带爷爷轻松出门，优先选择无障碍、少走路、安静、好停车的路线，餐厅需要清淡不辣。',
+  },
+  {
+    label: '电梯方便路线',
+    text: '请优先安排同商圈、电梯方便、无障碍通行的活动和餐厅，减少换乘和排队。',
+  },
+  {
+    label: '安静陪同出行',
+    text: '和爷爷轻松出门，不要吵，不要走太多路，最好有休息区和可预约的清淡餐厅。',
+  },
+  {
+    label: '不太晚回家',
+    text: '下午带爷爷出门，希望 18 点左右结束，轮椅友好、少走路，餐厅要有不辣选择。',
+  },
+];
+
+const soloScenes = [
+  {
+    label: '一个人轻松转转',
+    text: '周末想一个人轻松转转，找个附近的活动或咖啡休息一下，预算别太高，路线简单一点。',
+  },
+  {
+    label: '附近咖啡休息',
+    text: '想找附近咖啡馆坐一会儿，顺便安排一个轻松活动，路线不要太远。',
+  },
+  {
+    label: '低预算不踩雷',
+    text: '周末想低预算放松半天，优先推荐便宜、评分稳定、离我近的活动和餐厅。',
+  },
+  {
+    label: '雨天室内方案',
+    text: '如果下雨，帮我安排室内活动和咖啡/简餐，交通方便，不要排队太久。',
+  },
+  {
+    label: '半日放松路线',
+    text: '想安排一个半日轻松路线，有活动、有休息点，预算别太高，少走路。',
   },
 ];
 
@@ -81,86 +173,130 @@ function getFriendScenarioType(selectedFriends = []) {
   if (!selectedFriends.length) return 'generic';
   const hasAccessibility = selectedFriends.some((friend) => {
     const text = [friend.name, friend.relation, friend.summary, ...(friend.tags || [])].join(' ');
-    return /爷爷|奶奶|行动不便|需要轮椅|轮椅|需要陪同|不能吃辣|不吃辣|无障碍|电梯方便|好停车/.test(text);
+    return /爷爷|奶奶|老人|行动不便|需要轮椅|轮椅|需要陪同|不能吃辣|不吃辣|无障碍|电梯方便|好停车/.test(text);
   });
+  const hasElderFamily = selectedFriends.some((friend) => {
+    const text = [friend.name, friend.relation, friend.summary, ...(friend.tags || [])].join(' ');
+    return /妈妈|爸爸|家人|家庭/.test(text);
+  });
+  if (hasAccessibility && hasElderFamily) return 'family_elder';
   if (hasAccessibility) return 'accessibility';
+  const hasKids = selectedFriends.some((friend) => {
+    const text = [friend.name, friend.relation, friend.summary, ...(friend.tags || [])].join(' ');
+    return /孩子|宝宝|儿童|亲子/.test(text);
+  });
+  if (hasKids) return 'family';
   const hasFamily = selectedFriends.some((friend) => {
     const text = [friend.name, friend.relation, ...(friend.tags || [])].join(' ');
-    return /妈妈|爸爸|宝宝|孩子|老人|家人|亲子|安静|少走路|不要太晚/.test(text);
+    return /妈妈|爸爸|家人|亲子/.test(text);
   });
   const hasSocial = selectedFriends.some((friend) => {
     const text = [friend.id, friend.name, ...(friend.tags || [])].join(' ');
-    return /xiaoyu|azhe|leo|小雨|阿哲|Leo|朋友|日料|展览|拍照|电影|火锅|Livehouse|烧烤/.test(text);
+    return /azhe|leo|阿哲|Leo|朋友|电影|火锅|Livehouse|烧烤|热闹/.test(text);
   });
+  const hasDate = selectedFriends.some((friend) => {
+    const text = [friend.id, friend.name, ...(friend.tags || [])].join(' ');
+    return /xiaoyu|小雨|拍照|日料|展览|约会|少走路/.test(text);
+  });
+  if (hasDate && !hasSocial) return 'date';
+  if ((hasSocial || selectedFriends.length >= 3) && !hasFamily) return 'social';
   if (selectedFriends.length > 1 && hasFamily && hasSocial) return 'mixed';
   if (hasFamily) return 'family';
+  if (hasDate) return 'date';
   if (hasSocial) return 'social';
   return 'mixed';
 }
 
-function getDynamicScenes(selectedFriends = []) {
+export function getDefaultPlanningContent(selectedFriends = []) {
   const type = getFriendScenarioType(selectedFriends);
   if (type === 'accessibility') {
-    return [
-      { label: '无障碍少走路', text: '周末想带行动不便的家人出门，需要轮椅友好、少走路、电梯方便、好停车，餐厅不能吃辣，不要太晚。' },
-      { label: '清淡不辣晚餐', text: '想安排适合老人陪同的室内活动和清淡不辣晚餐，路线要短，可预约，环境安静。' },
-      { label: '电梯方便路线', text: '请优先安排同商圈、电梯方便、无障碍通行的活动和餐厅，减少换乘和排队。' },
-      { label: '安静陪同出行', text: '和家人轻松出门，不要吵，不要走太多路，最好有休息区和可预约的清淡餐厅。' },
-      { label: '不太晚回家', text: '下午出门，想在 18 点左右结束，适合老人、轮椅友好、餐厅不辣。' },
-    ];
+    return {
+      sceneType: type,
+      defaultInput: '周末想带爷爷出门，希望少走路、电梯方便、安静不吵，餐厅要有不辣选择，最好不要太晚回家。',
+      quickScenes: accessibilityScenes,
+      recommendedQuestions: [
+        '带爷爷出门，轮椅友好、少走路怎么安排？',
+        '能不能过滤掉火锅烧烤和需要久站的活动？',
+        '想找安静、好停车、不辣的晚餐路线。',
+      ],
+    };
   }
-  if (type === 'social') return socialScenes;
-  if (type === 'family') return familyScenes;
-  if (type === 'mixed') return mixedScenes;
-  return quickScenes.map((item) => ({
-    label: item.label,
-    text: sampleRequests[item.key],
-  }));
-}
-
-function getDynamicQuestions(selectedFriends = []) {
-  const names = friendNames(selectedFriends);
-  const type = getFriendScenarioType(selectedFriends);
-  if (type === 'accessibility') {
-    const familyName = names || '家人';
-    return [
-      `带${familyName}出门，轮椅友好、少走路怎么安排？`,
-      '能不能过滤掉火锅烧烤和需要久站的活动？',
-      '请优先推荐不辣、安静、可预约的餐厅。',
-    ];
+  if (type === 'family_elder') {
+    return {
+      sceneType: type,
+      defaultInput: '周末想和妈妈一起带爷爷出门，希望路线少走路、电梯方便，餐厅清淡不辣，最好安静一点、不要太晚回家。',
+      quickScenes: familyElderScenes,
+      recommendedQuestions: [
+        '和妈妈一起带爷爷出门，少走路路线怎么安排？',
+        '有没有电梯方便、可预约、不辣的餐厅？',
+        '想要安静、好停车、适合陪同的半日路线。',
+      ],
+    };
+  }
+  if (type === 'date') {
+    return {
+      sceneType: type,
+      defaultInput: '周末想和小雨轻松约会，希望能拍照、有甜品或日料，路线别太远，最好同一个商圈解决。',
+      quickScenes: dateScenes,
+      recommendedQuestions: [
+        '和小雨约会，拍照加晚餐怎么安排？',
+        '想少走路，有日料和甜品的路线有哪些？',
+        '预算内轻松约会，怎么避开排队店？',
+      ],
+    };
   }
   if (type === 'social') {
-    return [
-      `我和${names}下午 4 小时怎么安排？`,
-      '能不能避开排队店，同时保留拍照和晚餐？',
-      '预算 400 内，适合多人轻松出行吗？',
-    ];
+    return {
+      sceneType: type,
+      defaultInput: '今晚和朋友聚会，想先玩再吃饭，气氛热闹一些，最好同一个商圈解决。',
+      quickScenes: socialScenes,
+      recommendedQuestions: [
+        '三四个人聚会，怎么安排不踩雷？',
+        '能不能避开高排队商家，同时保留热闹氛围？',
+        '预算 400 内，朋友聚会怎么安排？',
+      ],
+    };
   }
   if (type === 'family') {
-    const familyName = names || '家人';
-    return [
-      `带${familyName}出门，少走路的路线怎么安排？`,
-      '下雨天适合家人一起去哪里？',
-      '能不能优先推荐安静、可预约的餐厅？',
-    ];
+    return {
+      sceneType: type,
+      defaultInput: '周末想带孩子出门，希望室内、轻松、安全，餐厅亲子友好，路线不要太折腾。',
+      quickScenes: familyScenes,
+      recommendedQuestions: [
+        '带孩子出门，室内轻松路线怎么安排？',
+        '有没有亲子友好、少走路的餐厅？',
+        '下雨天适合家人一起去哪里？',
+      ],
+    };
   }
   if (type === 'mixed') {
-    return [
-      `我和${names}一起出门，怎么平衡大家偏好？`,
-      '能不能优先安排同商圈、少走路、可预约的方案？',
-      '预算 400 内，多人吃喝玩乐怎么安排？',
-    ];
+    return {
+      sceneType: type,
+      defaultInput: '周末和几个同行人一起出门，请帮我平衡大家的餐厅、活动、预算和路线偏好。',
+      quickScenes: mixedScenes,
+      recommendedQuestions: [
+        '多人一起出门，怎么平衡大家偏好？',
+        '能不能优先安排同商圈、少走路、可预约的方案？',
+        '预算 400 内，多人吃喝玩乐怎么安排？',
+      ],
+    };
   }
-  return [
-    '附近 3 小时轻松约会怎么安排？',
-    '餐厅满座时能自动换同价位选择吗？',
-    '帮我控制预算并减少路上时间。',
-  ];
+  return {
+    sceneType: 'generic',
+    defaultInput: '周末想一个人轻松转转，找个附近的活动或咖啡休息一下，预算别太高，路线简单一点。',
+    quickScenes: soloScenes,
+    recommendedQuestions: [
+      '附近一个人轻松转转怎么安排？',
+      '想找个咖啡和活动，路线别太远。',
+      '低预算半日放松有什么选择？',
+    ],
+  };
 }
 
 export default function AgentInputPage({ value, onChange, onBack, onPlan, selectedFriends = [] }) {
-  const dynamicScenes = getDynamicScenes(selectedFriends);
-  const dynamicQuestions = getDynamicQuestions(selectedFriends);
+  const planningContent = getDefaultPlanningContent(selectedFriends);
+  const dynamicScenes = planningContent.quickScenes;
+  const dynamicQuestions = planningContent.recommendedQuestions;
   const names = friendNames(selectedFriends);
 
   return (

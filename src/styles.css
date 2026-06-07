@@ -1731,6 +1731,7 @@ button:active {
 
 .plan-price {
   flex: none;
+  width: 92px;
   text-align: right;
 }
 
@@ -1746,6 +1747,48 @@ button:active {
   font-size: 22px;
   font-weight: 900;
   line-height: 1.1;
+}
+
+.plan-price-deal {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 4px;
+  margin-top: 2px;
+  white-space: nowrap;
+}
+
+.plan-price-deal em {
+  display: inline-flex;
+  align-items: center;
+  height: 16px;
+  border-radius: 5px;
+  background: #fff0e8;
+  padding: 0 5px;
+  color: #f05a18;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.plan-price-deal del {
+  color: #a7a7a7;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.plan-price small {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 3px;
+  border-radius: 5px;
+  background: #fff0ec;
+  padding: 1px 5px;
+  color: #f05a18;
+  font-size: 10px;
+  font-weight: 900;
+  white-space: nowrap;
 }
 
 .plan-stop-preview {
@@ -2300,14 +2343,22 @@ button:active {
 }
 
 .plan-replace-card button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: start;
   margin-top: 8px;
-  min-height: 32px;
+  min-width: 84px;
+  height: 30px;
+  padding: 0 12px;
   border: 0;
   border-radius: 999px;
   background: linear-gradient(135deg, #ffd100, #ffb72a);
   color: #1f1f1f;
   font-size: 12px;
   font-weight: 900;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 .plan-replace-card button:active {

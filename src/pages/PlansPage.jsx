@@ -212,6 +212,23 @@ function priceText(place = {}) {
   return '价格以门店为准';
 }
 
+function planPriceMeta(plan = {}) {
+  const totalPrice = Number(plan.displayPrice || plan.totalPrice || plan.budget || 0);
+  const couponDiscount =
+    plan.couponDiscount ??
+    (totalPrice <= 248 ? 18 : totalPrice <= 368 ? 27 : 36);
+  const extraDiscount = Math.max(22, Math.round(totalPrice * 0.28));
+  const originalPrice = Number(plan.originalPrice || totalPrice + couponDiscount + extraDiscount);
+  const discountRate = plan.discountRate || `${Math.max(2.5, (totalPrice / originalPrice) * 10).toFixed(1)}折`;
+  return {
+    totalPrice,
+    originalPrice,
+    discountRate,
+    couponDiscount,
+    priceLabel: plan.priceLabel || '预计总价',
+  };
+}
+
 function queueText(level) {
   if (level === 'high') return '排队较高';
   if (level === 'medium') return '排队适中';
@@ -824,6 +841,7 @@ export default function PlansPage({ request = '', onBack, onConfirm, selectedFri
             const restaurant = getById(restaurants, plan.restaurantId);
             const timeline = buildTimeline(plan, activity, restaurant);
             const stops = buildPlanStops(plan, activity, restaurant, timeline, pageUsedImages);
+            const priceMeta = planPriceMeta(plan);
 
             return (
               <article key={plan.id} className="plan-card">
@@ -837,8 +855,13 @@ export default function PlansPage({ request = '', onBack, onConfirm, selectedFri
                     <p>{plan.highlight}</p>
                   </div>
                   <div className="plan-price">
-                    <span>预计总价</span>
-                    <strong>¥{plan.budget}</strong>
+                    <span>{priceMeta.priceLabel}</span>
+                    <strong>¥{priceMeta.totalPrice}</strong>
+                    <div className="plan-price-deal">
+                      <em>{priceMeta.discountRate}</em>
+                      <del>¥{priceMeta.originalPrice}</del>
+                    </div>
+                    <small>神券减 ¥{priceMeta.couponDiscount}</small>
                   </div>
                 </div>
 
