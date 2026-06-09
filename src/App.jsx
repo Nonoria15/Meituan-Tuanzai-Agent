@@ -89,7 +89,7 @@ export default function App() {
         <BookingPage
           plan={selectedPlan}
           selectedFriends={selectedFriends}
-          onBack={() => setScreen(screens.plans)}
+          onBack={goHome}
           onRestaurantSelected={setSelectedFallbackRestaurant}
           onFinish={() => setScreen(screens.itinerary)}
         />
@@ -99,7 +99,7 @@ export default function App() {
           plan={selectedPlan}
           selectedFriends={selectedFriends}
           selectedRestaurant={selectedFallbackRestaurant}
-          onBack={() => setScreen(screens.booking)}
+          onBack={goHome}
           onRestart={() => {
             setSelectedPlan(null);
             setSelectedFallbackRestaurant(null);
